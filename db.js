@@ -8,5 +8,4 @@ const connecttodb = () => {
         console.log('connecton failed:', error)
     })
 }
-
 module.exports = connecttodb;
