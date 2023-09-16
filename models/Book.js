@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
-
+// this is the structure in which data will have to be inserted called as 'BookSchema' (schema means structure)
 const BookSchema = new Schema ({
     title:{
         type: String,
@@ -21,4 +21,4 @@ const BookSchema = new Schema ({
     }
 })
 
-module.exports = mongoose.model('book', BookSchema);
+module.exports = mongoose.model('book', BookSchema);//at this line we creating a new model name "book" and exporting both model and schema

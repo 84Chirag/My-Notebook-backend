@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
+// this is the structure in which data will have to be inserted called as 'UserSchema' (schema means structure)
 const UserSchema = new Schema ({
     name:{
         type: String,
@@ -22,4 +23,4 @@ const UserSchema = new Schema ({
     }
 })
 
-module.exports = mongoose.model('user', UserSchema);
+module.exports = mongoose.model('user', UserSchema);//at this line we creating a new model name "user" and exporting both model and schema
