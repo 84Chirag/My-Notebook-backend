@@ -17,10 +17,10 @@ router.post('/', (req, res)=>{
 
 })
 */
-
+//Creating a user signing up a user "/signup"
 //but here we are validating the data which we will post to us by user so that our app don't get crashed 
 //and we will use 'save()' instead we save by using this below syntax cause we are using express-validator
-router.post('/', [//below are the check we use for validating the data // Validation checks for the request body fields using express-validator.
+router.post('/signup', [//below are the check we use for validating the data // Validation checks for the request body fields using express-validator.
   body('name', 'Enter Your Name Correctly').isLength({ min: 3 }),
   body('email', 'Enter Your email Correctly').isEmail(),
   body('password', 'Enter Your password Correctly').isLength({ min: 5 })
