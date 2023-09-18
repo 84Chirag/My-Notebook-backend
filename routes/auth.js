@@ -17,7 +17,7 @@ router.post('/', (req, res)=>{
 
 })
 */
-//Creating a user signing up a user "/signup"
+//Creating a user signing up a user using post"/signup". no login required
 //but here we are validating the data which we will post to us by user so that our app don't get crashed 
 //and we will use 'save()' instead we save by using this below syntax cause we are using express-validator
 router.post('/signup', [//below are the check we use for validating the data // Validation checks for the request body fields using express-validator.
@@ -70,6 +70,30 @@ router.post('/signup', [//below are the check we use for validating the data // 
   // User.save() is used to update an existing user document, not for creating new documents.
   // In this code, we are creating a new user document, so User.create() is used instead.
   */
+})
+
+
+
+// authenticating a user loging in a user using post"/login". no login required
+router.post('/login', [//below are the check we use for validating the data // Validation checks for the request body fields using express-validator.
+  body('email', 'Enter Your email Correctly').isEmail(),
+  body('password', 'Pasword cannot be blank').exists(),
+], async (req, res) => {
+  // If there are errors, return a 400 Bad Request response with the errors.
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const{ email, password} = req.body;
+  try {
+    const user = User.findOne({email});
+    if (!user) {
+      return res.status(400).send("there is no email")
+    }
+  }
+  catch{
+    
+  }
 })
 
 module.exports = router
