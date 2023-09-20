@@ -3,6 +3,10 @@ const {Schema} = mongoose;
 
 // this is the structure in which data will have to be inserted called as 'BookSchema' (schema means structure)
 const BookSchema = new Schema ({
+    user:{
+        type: 'ObjectId',
+        ref: 'user'
+    },
     title:{
         type: String,
         require: true
@@ -11,9 +15,13 @@ const BookSchema = new Schema ({
         type: String,
         require: true,
     },
+    link:{
+        type: String,
+        require: true
+    },
     tag:{
         type: String,
-        default: General
+        default: "General"
     },
     date:{
         type: Date,
