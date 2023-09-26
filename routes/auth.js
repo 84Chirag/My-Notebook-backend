@@ -134,7 +134,6 @@ router.post('/getuser', userdata, async (req, res) => {
     const user = await User.findById(userId).select("-password")
     // Send the user data (excluding the password) to the authenticated user.
     res.send({ user });
-    res.send({ user })
   } catch (error) {
     // Send an internal server error if there's an issue on the server.
     console.log(error)

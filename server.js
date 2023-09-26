@@ -13,7 +13,7 @@ app.use('/book', require('./routes/book'));
 
 // endpoints
 app.listen(port, () => {
-  console.log(`http://127.0.0.1:${port}`)
+  console.log(`http://localhost:${port}`)
 })
 
 connecttodb();
