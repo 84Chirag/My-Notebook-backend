@@ -34,18 +34,19 @@ router.post('/signup', [//below are the check we use for validating the data
   body('email', 'Enter Your email Correctly').isEmail(),
   body('password', 'Enter Your password Correctly').isLength({ min: 5 })
 ], async (req, res) => {
+  let success = false;
   // Validate the request body against the defined checks.
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     // If there are validation errors, return a 400 Bad Request response with the errors.
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({success, errors: errors.array() });
   }
   try {
 
     let user = await User.findOne({ email: req.body.email })
     // If the request data is valid, create a new User instance and save it to the database using User.create().
     if (user) {
-      return res.status(400).json({ error: "A User With this Account Already Exists" })
+      return res.status(400).json({success, error: "A User With this Account Already Exists" })
     }
     // adding salt from bcrypt with hash passwrd
     const salt = await bcrypt.genSalt(10)
@@ -67,9 +68,10 @@ router.post('/signup', [//below are the check we use for validating the data
     //assigning authenticationtoken both data and JWT_SECRET and sending it to user as response
     //JWT_SECRET is used to check if anyone has temper with the token when user send the token back
     const authenticationtoken = jwt.sign(data, JWT_SECRET)
-    console.log(authenticationtoken)
+    // console.log(authenticationtoken)
     //so here we are sending authenticationtoken which is user's database index id with my signature to user as authentication token which will set it in it's local storage to keep him logged in until he log out himself
-    res.send(authenticationtoken)
+    success = true;
+    res.json({ success, authenticationtoken})
   }
   catch (error) {
     console.error(error.message);
@@ -84,6 +86,7 @@ router.post('/login', [//below are the check we use for validating the data // V
   body('email', 'Enter Your email Correctly').isEmail(),
   body('password', 'Pasword cannot be blank').exists(),
 ], async (req, res) => {
+  let success = false;
   // If there are errors, return a 400 Bad Request response with the errors.
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -97,13 +100,13 @@ router.post('/login', [//below are the check we use for validating the data // V
     const user = await User.findOne({ email });
     // if there is no email in database then sending error
     if (!user) {
-      return res.status(400).send("there is no email")
+      return res.status(400).json("there is no email")
     }
     // comparing the password with database's password
     const passwordmatch = await bcrypt.compare(password, user.password);
     // if password doesn't match sending error
     if (!passwordmatch) {
-      return res.status(400).json({ error: "please enter correct password" });
+      return res.status(400).json({success, error: "please enter correct password" });
     }
     //assigning data, user, id of database id
     const data = {
@@ -115,9 +118,10 @@ router.post('/login', [//below are the check we use for validating the data // V
     //assigning authenticationtoken both data and JWT_SECRET and sending it to user as response
     //JWT_SECRET is used to check if anyone has temper with the token when user send the token back
     const authenticationtoken = jwt.sign(data, JWT_SECRET)
-    console.log(authenticationtoken)
+    // console.log(authenticationtoken)
+    success = true;
     //so here we are sending authenticationtoken which is user's database index id with my signature to user as authentication token which will set it in it's local storage to keep him logged in until he log out himself
-    res.send(authenticationtoken)
+    res.json({success, authenticationtoken})
   }
   catch (error) {
     // sending error if there any error in server as internal error
@@ -133,7 +137,7 @@ router.post('/getuser', userdata, async (req, res) => {
     userId = req.user.id;
     const user = await User.findById(userId).select("-password")
     // Send the user data (excluding the password) to the authenticated user.
-    res.send({ user });
+    res.json({ user });
   } catch (error) {
     // Send an internal server error if there's an issue on the server.
     console.log(error)
