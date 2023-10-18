@@ -1,12 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User')
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 const userdata = require('../middleware/userdata') // Import custom middleware for user authentication.
 
-const JWT_SECRET = "chirag-gour" // Replace with a secure secret key in production
+const JWT_SECRET = process.env.JWT_SECRET // Replace with a secure secret key in production
+// const JWT_SECRET = "chirag-gour" // Replace with a secure secret key in production
 
 // Creating an Express Router instance.
 // This allows us to define routes for our API.
